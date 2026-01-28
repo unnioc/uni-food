@@ -76,7 +76,49 @@
           "style": {
             "navigationBarTitleText": "设置个人信息"
           }
-        }
+  		},
+		{
+			"path": "MyAddressPage/MyAddressPage",
+			"style": {
+				"navigationBarTitleText": "我的地址"
+			}
+		},
+		{
+			"path": "EditAddressPage/EditAddressPage",
+			"style": {
+				"navigationBarTitleText": "修改地址"
+			}
+		},
+		{
+			"path": "AddAddressPage/AddAddressPage",
+			"style": {
+				"navigationBarTitleText": "添加地址"
+			}
+		},
+		{
+			"path": "MyCouponsPage/MyCouponsPage",
+			"style": {
+				"navigationBarTitleText": "我的优惠券"
+			}
+		},
+		{
+			"path": "HelpCenterPage/HelpCenterPage",
+			"style": {
+				"navigationBarTitleText": "帮助中心"
+			}
+		},
+		{
+			"path": "LoginPage/LoginPage",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "RegisterPage/RegisterPage",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		}
       ]
     },
     {
