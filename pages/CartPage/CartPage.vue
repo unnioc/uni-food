@@ -3,7 +3,7 @@
  		<!-- 顶部操作栏 -->
  		<view class="header-action">
  			<text class="select-btn" @click="selectAllCart">全选</text>
- 			<text class="clear-btn" @click="clearCart">清空</text>
+ 			<text class="clear-btn" @click="confirmClear">清空</text>
  		</view>
  		<scroll-view scroll-y class="cart-list">
  			<!-- 购物车列表项 -->
@@ -39,6 +39,11 @@
  			<button class="checkout-btn" @click="goCheckout">前往结账</button>
  		</view>
  	</view>
+ 	<!-- 自定义弹窗组件 -->
+ 	<CustomModal :visible="showClearModal" title="清空购物车?" content="您确定要清空购物车里的东西吗？" icon="/static/ic_delete.png"
+ 		iconBg="#fff1f1" confirmText="清空" confirmColor="#e34848" @confirm="doClearCart"
+ 		@cancel="showClearModal = false" />
+
  </template>
 
  <script setup>
@@ -46,6 +51,7 @@
  		ref,
  		computed
  	} from 'vue';
+ 	import CustomModal from '@/components/customModal.vue'
  	// 1. 模拟购物车数据 
  	const cartList = ref([{
  		id: 1,
@@ -149,7 +155,7 @@
  	}
 
  	// 6. 清空购物车 
- 	const clearCart = () => {
+ 	/* const clearCart = () => {
  		uni.showModal({
  			title: '清空购物车',
  			content: '您确定要清空购物车吗?',
@@ -157,6 +163,16 @@
  				if (res.confirm) cartList.value = [];
  			}
  		});
+ 	}; */
+
+ 	const showClearModal = ref(false);
+ 	const confirmClear = () => {
+ 		showClearModal.value = true;
+ 	};
+ 	const doClearCart = () => {
+ 		// 执行清空购物车逻辑
+ 		cartList.value = []
+ 		showClearModal.value = false
  	};
  	// 7. 去结算 
  	const goCheckout = () => {
