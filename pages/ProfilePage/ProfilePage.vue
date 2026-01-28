@@ -9,7 +9,8 @@
 		</view>
 		<!-- 2. 导航菜单列表 -->
 		<view class="menu-list">
-			<view v-for="(item, index) in menuItems" :key="index" class="menu-item" @click="navigateTo(item.path)">
+			<view v-for="(item, index) in menuItems" :key="index" class="menu-item"
+				@click="index==0?switchTab(item.path):navigateTo(item.path)">
 				<view class="item-left">
 					<image class="icon" :src="item.image" mode=""></image>
 					<text class="item-title">{{ item.title }}</text>
@@ -19,15 +20,38 @@
 		</view>
 		<!-- 3. 退出登录按钮 -->
 		<view class="logout-section">
-			<button class="logout-btn" @click="handleLogout">退出登录</button>
+			<button class="logout-btn" @click="comfirmExit">退出登录</button>
 		</view>
 	</view>
+	<!-- 自定义弹窗组件 -->
+	<CustomModal :visible="showExitModal" title="退出登录" content="您确定要退出当前登录吗？" icon="/static/ic_tip.png" iconBg="#ecf8f2"
+		confirmText="确定" confirmColor="#42b983" @confirm="doExit" @cancel="showExitModal = false" cancel-text="取消" />
 </template>
 
 <script setup>
 	import {
 		ref
 	} from 'vue';
+	import CustomModal from '@/components/customModal.vue'
+
+	const showExitModal = ref(false)
+	const comfirmExit = () => {
+		showExitModal.value = true
+	}
+	const doExit = () => {
+		// todo:待完成 退出账号
+		showExitModal.value = false
+		uni.showToast({
+			icon: 'none',
+			title: '退出登录成功,正在跳转至首页...'
+		})
+		setTimeout(() => {
+			uni.switchTab({
+				url: '/pages/index/index'
+			})
+		}, 1000)
+	}
+
 	// 菜单配置数据，方便扩展 
 	const menuItems = ref([{
 		title: '我的订单',
@@ -36,19 +60,19 @@
 	}, {
 		title: '收货地址',
 		image: '/static/ic_address.png',
-		path: '/pages/address/address'
+		path: '/packageProfile/MyAddressPage/MyAddressPage'
 	}, {
 		title: '优惠券',
 		image: '/static/ic_coupons.png',
-		path: '/pages/coupons/coupons'
+		path: '/packageProfile/MyCouponsPage/MyCouponsPage'
 	}, {
 		title: '设置',
 		image: '/static/ic_settings.png',
-		path: '/pages/settings/settings'
+		path: '/packageProfile/SettingPage/SettingPage'
 	}, {
 		title: '帮助中心',
 		image: '/static/ic_help.png',
-		path: '/pages/help/help'
+		path: '/packageProfile/HelpCenterPage/HelpCenterPage'
 	}]);
 
 	const navigateTo = (path) => {
@@ -57,24 +81,30 @@
 		});
 	};
 
-	const handleLogout = () => {
-		uni.showModal({
-			title: '退出登录',
-			content: '	确定要登出账号吗?',
-			confirmColor: '#ff5252',
-			success: (res) => {
-				if (res
-					.confirm
-				) {
-					// 教学点：实际开发中需清除本地存储的 token 
-					uni.showToast({
-						title: '退出登录成功',
-						icon: 'success'
-					}); // 重定向到登录页或首页游客态 
-				}
-			}
-		});
-	};
+	const switchTab = (path) => {
+		uni.switchTab({
+			url: path
+		})
+	}
+
+	// const handleLogout = () => {
+	// 	uni.showModal({
+	// 		title: '退出登录',
+	// 		content: '	确定要登出账号吗?',
+	// 		confirmColor: '#ff5252',
+	// 		success: (res) => {
+	// 			if (res
+	// 				.confirm
+	// 			) {
+	// 				// 教学点：实际开发中需清除本地存储的 token 
+	// 				uni.showToast({
+	// 					title: '退出登录成功',
+	// 					icon: 'success'
+	// 				}); // 重定向到登录页或首页游客态 
+	// 			}
+	// 		}
+	// 	});
+	// };
 </script>
 <style lang="scss">
 	$primary-color: #42b983;
