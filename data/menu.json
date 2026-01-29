@@ -1,0 +1,364 @@
+{
+  "banners": [
+    {
+      "id": 1,
+      "image": "/static/rectangle.jpg"
+    },
+    {
+      "id": 2,
+      "image": "/static/rectangle.jpg"
+    },
+    {
+      "id": 3,
+      "image": "/static/rectangle.jpg"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "全部"
+    },
+    {
+      "id": 2,
+      "name": "披萨"
+    },
+    {
+      "id": 3,
+      "name": "汉堡"
+    },
+    {
+      "id": 4,
+      "name": "饮品"
+    },
+    {
+      "id": 5,
+      "name": "寿司"
+    },
+    {
+      "id": 6,
+      "name": "甜点"
+    }
+  ],
+  "foodList": [
+    {
+      "id": 101,
+      "categoryId": 2,
+      "name": "玛格丽特皇后",
+      "desc": "新鲜罗勒、莫扎里拉芝士与手工番茄酱的经典邂逅",
+      "price": 42,
+      "image": "/static/food_101.jpg"
+    },
+    {
+      "id": 102,
+      "categoryId": 2,
+      "name": "田园时蔬荟萃",
+      "desc": "精选当季彩椒、菌菇与甜玉米，每一口都是大自然的味道",
+      "price": 45,
+      "image": "/static/food_102.jpg"
+    },
+    {
+      "id": 103,
+      "categoryId": 2,
+      "name": "海鲜至尊披萨",
+      "desc": "大颗虾仁、鱿鱼圈搭配秘制海鲜酱，尽享海洋鲜甜",
+      "price": 68,
+      "image": "/static/food_103.jpg"
+    },
+    {
+      "id": 104,
+      "categoryId": 2,
+      "name": "夏威夷风情",
+      "desc": "清甜菠萝遇上咸香火腿，酸甜解腻的经典之选",
+      "price": 48,
+      "image": "/static/food_104.jpg"
+    },
+    {
+      "id": 105,
+      "categoryId": 2,
+      "name": "黑椒牛肉薄饼",
+      "desc": "嫩滑黑椒牛肉配上薄脆饼底，浓郁香辣停不下来",
+      "price": 58,
+      "image": "/static/food_105.jpg"
+    },
+    {
+      "id": 106,
+      "categoryId": 2,
+      "name": "榴莲忘返披萨",
+      "desc": "精选苏丹王榴莲肉，奶香浓郁，果肉厚实",
+      "price": 72,
+      "image": "/static/food_106.jpg"
+    },
+    {
+      "id": 107,
+      "categoryId": 2,
+      "name": "墨西哥香辣鸡肉",
+      "desc": "香辣鸡肉配上墨西哥风味辣椒，挑战你的味蕾",
+      "price": 52,
+      "image": "/static/food_107.jpg"
+    },
+    {
+      "id": 108,
+      "categoryId": 2,
+      "name": "德式香肠拼盘披萨",
+      "desc": "三款不同风味的德式香肠，肉食爱好者的福音",
+      "price": 55,
+      "image": "/static/food_108.jpg"
+    },
+    {
+      "id": 201,
+      "categoryId": 3,
+      "name": "经典厚制牛堡",
+      "desc": "100%澳洲进口牛肉，搭配新鲜生菜与秘制酱料",
+      "price": 32,
+      "image": "/static/food_201.jpg"
+    },
+    {
+      "id": 202,
+      "categoryId": 3,
+      "name": "酥脆滋汁鸡腿堡",
+      "desc": "金黄酥脆的鸡腿肉，外酥里嫩，汁水丰盈",
+      "price": 26,
+      "image": "/static/food_202.jpg"
+    },
+    {
+      "id": 203,
+      "categoryId": 3,
+      "name": "培根芝士蛋堡",
+      "desc": "香煎培根与流心蛋的完美组合，唤醒你的味蕾",
+      "price": 28,
+      "image": "/static/food_203.jpg"
+    },
+    {
+      "id": 204,
+      "categoryId": 3,
+      "name": "深海鳕鱼堡",
+      "desc": "精选阿拉斯加鳕鱼排，搭配塔塔酱，清新不油腻",
+      "price": 35,
+      "image": "/static/food_204.jpg"
+    },
+    {
+      "id": 205,
+      "categoryId": 3,
+      "name": "牛油果素食堡",
+      "desc": "绵密牛油果泥配上植物蛋白肉，健康轻负担",
+      "price": 38,
+      "image": "/static/food_205.jpg"
+    },
+    {
+      "id": 206,
+      "categoryId": 3,
+      "name": "松露酱蘑菇牛堡",
+      "desc": "黑松露酱的独特香气提升了牛肉的鲜美层次",
+      "price": 45,
+      "image": "/static/food_206.jpg"
+    },
+    {
+      "id": 207,
+      "categoryId": 3,
+      "name": "双层美式芝士堡",
+      "desc": "双倍牛肉加双倍芝士，带来极致的罪恶享受",
+      "price": 42,
+      "image": "/static/food_207.jpg"
+    },
+    {
+      "id": 208,
+      "categoryId": 3,
+      "name": "韩式泡菜炸鸡堡",
+      "desc": "酸辣泡菜解开炸鸡的油腻，口感爽脆丰富",
+      "price": 30,
+      "image": "/static/food_208.jpg"
+    },
+    {
+      "id": 301,
+      "categoryId": 4,
+      "name": "手打柠檬气泡水",
+      "desc": "香气浓郁的香水柠檬，搭配清爽气泡，酷爽解暑",
+      "price": 16,
+      "image": "/static/food_301.jpg"
+    },
+    {
+      "id": 302,
+      "categoryId": 4,
+      "name": "多肉葡萄芝士",
+      "desc": "颗颗手剥葡萄果肉，覆盖厚厚一层咸甜芝士奶盖",
+      "price": 22,
+      "image": "/static/food_302.jpg"
+    },
+    {
+      "id": 303,
+      "categoryId": 4,
+      "name": "厚乳拿铁咖啡",
+      "desc": "精选意式浓缩相遇醇厚牛乳，口感丝滑细腻",
+      "price": 18,
+      "image": "/static/food_303.jpg"
+    },
+    {
+      "id": 304,
+      "categoryId": 4,
+      "name": "满杯红柚",
+      "desc": "鲜甜红柚果粒，清香绿茶茶底，清甜微苦回甘",
+      "price": 19,
+      "image": "/static/food_304.jpg"
+    },
+    {
+      "id": 305,
+      "categoryId": 4,
+      "name": "京都抹茶奶青",
+      "desc": "正宗宇治抹茶配上清新青茶，抹茶控的首选",
+      "price": 17,
+      "image": "/static/food_305.jpg"
+    },
+    {
+      "id": 306,
+      "categoryId": 4,
+      "name": "生椰拿铁",
+      "desc": "椰乳的清甜平衡了咖啡的焦苦，夏日必喝",
+      "price": 18,
+      "image": "/static/food_306.jpg"
+    },
+    {
+      "id": 307,
+      "categoryId": 4,
+      "name": "百香果双响炮",
+      "desc": "百香果肉配上珍珠与椰果，口感层次分明",
+      "price": 15,
+      "image": "/static/food_307.jpg"
+    },
+    {
+      "id": 308,
+      "categoryId": 4,
+      "name": "白桃乌龙冷泡茶",
+      "desc": "清新白桃香气，回甘悠长的乌龙茶汤",
+      "price": 12,
+      "image": "/static/food_308.jpg"
+    },
+    {
+      "id": 401,
+      "categoryId": 5,
+      "name": "三文鱼握寿司",
+      "desc": "厚切鲜嫩三文鱼，搭配软糯越光米",
+      "price": 38,
+      "image": "/static/food_401.jpg"
+    },
+    {
+      "id": 402,
+      "categoryId": 5,
+      "name": "加州卷",
+      "desc": "蟹柳、牛油果与飞鱼籽的经典结合，口感丰富",
+      "price": 32,
+      "image": "/static/food_402.jpg"
+    },
+    {
+      "id": 403,
+      "categoryId": 5,
+      "name": "火炙鳗鱼手卷",
+      "desc": "特制酱汁烤制，入口即化的鲜美体验",
+      "price": 28,
+      "image": "/static/food_403.jpg"
+    },
+    {
+      "id": 404,
+      "categoryId": 5,
+      "name": "芝士虾仁卷",
+      "desc": "鲜甜虾仁覆盖浓郁芝士，经过火炙香气扑鼻",
+      "price": 35,
+      "image": "/static/food_404.jpg"
+    },
+    {
+      "id": 405,
+      "categoryId": 5,
+      "name": "樱花素食卷",
+      "desc": "粉嫩樱花粉装饰，内裹清爽脆嫩时蔬",
+      "price": 26,
+      "image": "/static/food_405.jpg"
+    },
+    {
+      "id": 406,
+      "categoryId": 5,
+      "name": "北极贝握寿司",
+      "desc": "脆嫩爽口的北极贝，色泽鲜亮诱人",
+      "price": 42,
+      "image": "/static/food_406.jpg"
+    },
+    {
+      "id": 407,
+      "categoryId": 5,
+      "name": "金枪鱼牛油果卷",
+      "desc": "鲜美金枪鱼肉遇上绵密牛油果",
+      "price": 38,
+      "image": "/static/food_407.jpg"
+    },
+    {
+      "id": 408,
+      "categoryId": 5,
+      "name": "香辣吞拿鱼卷",
+      "desc": "特调香辣酱拌吞拿鱼，别样日式体验",
+      "price": 30,
+      "image": "/static/food_408.jpg"
+    },
+    {
+      "id": 501,
+      "categoryId": 6,
+      "name": "法式焦糖布丁",
+      "desc": "轻敲脆甜焦糖层，品味内部丝滑如绸的蛋奶香",
+      "price": 18,
+      "image": "/static/food_501.jpg"
+    },
+    {
+      "id": 502,
+      "categoryId": 6,
+      "name": "提拉米苏",
+      "desc": "马斯卡彭芝士与咖啡酒香的层层交织，苦甜平衡",
+      "price": 28,
+      "image": "/static/food_502.jpg"
+    },
+    {
+      "id": 503,
+      "categoryId": 6,
+      "name": "宇治抹茶慕斯",
+      "desc": "如云朵般轻盈的口感，带着微苦的茶香余韵",
+      "price": 25,
+      "image": "/static/food_503.jpg"
+    },
+    {
+      "id": 504,
+      "categoryId": 6,
+      "name": "蓝莓重芝士",
+      "desc": "浓郁奶酪底搭配新鲜蓝莓酱，细腻扎实",
+      "price": 22,
+      "image": "/static/food_504.jpg"
+    },
+    {
+      "id": 505,
+      "categoryId": 6,
+      "name": "芒果班戟",
+      "desc": "薄如蝉翼的蛋皮包裹大块鲜芒与轻奶油",
+      "price": 20,
+      "image": "/static/food_505.jpg"
+    },
+    {
+      "id": 506,
+      "categoryId": 6,
+      "name": "草莓红丝绒蛋糕",
+      "desc": "经典的红丝绒胚底配上酸甜草莓粒",
+      "price": 32,
+      "image": "/static/food_506.jpg"
+    },
+    {
+      "id": 507,
+      "categoryId": 6,
+      "name": "熔岩巧克力",
+      "desc": "切开后浓郁的巧克力酱如岩浆般缓缓流出",
+      "price": 35,
+      "image": "/static/food_507.jpg"
+    },
+    {
+      "id": 508,
+      "categoryId": 6,
+      "name": "日式豆乳盒子",
+      "desc": "豆乳的清香与奶油的甜度结合，低糖健康",
+      "price": 24,
+      "image": "/static/food_508.jpg"
+    }
+  ]
+}
