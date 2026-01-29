@@ -1,45 +1,38 @@
 <template>
-  <!-- 未登录 -->
-  <view v-if="isLoggin === false" class="denied-container">
-    <view class="content">
-      <!-- 中心插画图标 -->
-      <view class="illustration-box">
-        <view class="circle-bg">
-          <image class="lock-icon" src="/static/ic_user_green.png"></image>
-        </view>
-      </view>
-      <!-- 文本提示区 -->
-      <view class="text-section">
-        <text class="main-title">Please log in to continue</text>
-        <text class="sub-desc"> To track your campus meals and manage your cart, please sign in to your student
-          account.
-        </text>
-      </view>
-      <!-- 按钮组 -->
-      <view class="btn-group">
-        <button class="btn btn-primary" @click="goToLogin">Go to Login</button>
-        <button class="btn btn-secondary" @click="goHome">Return to Menu</button>
-      </view>
-    </view>
-  </view>
-
-  <!-- 已登录 -->
-  <view v-if="isLoggin === true" class="order-container">
-    <!-- 导航栏（如果是自定义导航栏可以取消注释） -->
-    <!-- <view class="nav-bar"> <uni-icons type="back" size="24"></uni-icons> <text class="title">Order History</text> </view> -->
+  <view class="order-page">
     <scroll-view scroll-y class="order-scroll">
-      <!-- 订单列表渲染 -->
-      <view v-for="(order, index) in orderHistory" :key="order.id" class="order-card">
+      <!-- 订单卡片 -->
+      <view v-for="(order, index) in orders" :key="order.id" class="order-card" @click="goToDetail(order.id)">
+        <!-- 顶部：价格与日期 -->
         <view class="card-header">
-          <text class="shop-name">{{ order.shopName }}</text>
-          <text class="total-price">￥{{ order.price }}</text>
+          <view class="card-header-start">
+            <text class="order-id">Order：#{{ order.id }}</text>
+            <text class="order-date">{{ order.date }}</text>
+          </view>
+          <text class="order-price">￥{{ order.totalPrice }}</text>
         </view>
-        <text class="order-date">{{ order.date }}</text>
-        <!-- 详情按钮 -->
-        <button class="details-btn" @click="goToDetails(order.id)">查看详情</button>
+        <!-- 中间：菜品图片预览 (核心教学点：嵌套渲染与截取) -->
+        <view class="image-preview-box">
+          <view class="image-list">
+            <!-- 只显示前3个图片 -->
+            <view v-for="(img, imgIdx) in order.images.slice(0, 3)" :key="imgIdx" class="img-wrapper">
+              <image :src="img" mode="aspectFill" class="food-thumb"/> <!-- 如果是第3张且总数超过3，显示叠加层 -->
+              <view v-if="imgIdx === 2 && order.images.length > 3" class="more-mask"> +{{
+                  order.images.length - 2
+                }}
+              </view>
+            </view>
+          </view>
+          <!-- 订单状态标签 -->
+          <!--          <text class="status-tag" :class="order.status">{{ order.statusText }}</text>-->
+        </view>
+        <!-- 底部：查看详情按钮 -->
+        <view class="card-footer">
+          <button class="detail-btn">View Details</button>
+        </view>
       </view>
-      <!-- 占位防止底部遮挡 -->
-      <view class="safe-area-bottom"></view>
+      <!-- 底部占位 -->
+      <view class="safe-bottom"></view>
     </scroll-view>
   </view>
 </template>
@@ -48,61 +41,35 @@
 import {
   ref
 } from 'vue';
-
-const isLoggin = ref(false)
-// 模拟订单数据，适合教学讲解 v-for
-const orderHistory = ref([{
-  id: '1001',
-  shopName: 'The Uni Food',
-  price: '18.50',
-  date: '2023-10-24'
+// 模拟订单数据，注意 images 是一个数组
+const orders = ref([{
+  id: '20231001',
+  date: '2023-10-24 12:30',
+  totalPrice: '128.50',
+  status: 'completed',
+  statusText: 'Completed',
+  images: ['/static/ic_food.png', '/static/ic_food.png', '/static/ic_food.png']
 }, {
-  id: '1002',
-  shopName: 'The Uni Food',
-  price: '12.00',
-  date: '2023-10-22'
-}, {
-  id: '1003',
-  shopName: 'The Uni Food',
-  price: '24.15',
-  date: '2023-10-21'
-}, {
-  id: '1004',
-  shopName: 'The Uni Food',
-  price: '15.40',
-  date: '2023-10-10'
+  id: '20231002',
+  date: '2023-10-23 18:15',
+  totalPrice: '45.00',
+  status: 'delivering',
+  statusText: 'Delivering',
+  images: ['/static/ic_food.png', '/static/ic_food.png']
 }]);
-
-const goToDetails = (
-    orderId) => {
-  // todo:演示路由跳转与传参
-  uni.navigateTo({
-    url: '/packageOrder/OrderDetailPage/OrderDetailPage'
-    // url: `/pages/order-details/order-details?id=${orderId}`
-  });
+const goToDetail = (id) => {
+  uni.navigateTo({url: `/packageOrder/OrderDetailPage/OrderDetailPage`});
 };
-
-const goToLogin = () => {
-  uni.navigateTo({url: '/packageProfile/LoginPage/LoginPage'});
-};
-const goHome = () => {
-  uni.switchTab({url: '/pages/index/index'});
-}
 </script>
 
 <style lang="scss">
-/* 定义主题色变量 */
 $primary-color: #42b983;
-
-.order-container {
-  background-color: #fcfcfc;
+.order-page {
+  background-color: #f8f9fa;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 .order-scroll {
-  flex: 1;
   padding: 20rpx 30rpx;
   box-sizing: border-box;
 }
@@ -110,173 +77,112 @@ $primary-color: #42b983;
 .order-card {
   background-color: #ffffff;
   border-radius: 24rpx;
-  padding: 40rpx;
+  padding: 30rpx;
   margin-bottom: 30rpx;
-  border: 1rpx solid #f0f0f0; // 浅色描边增加轮廓感
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.02);
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.02);
 
-  // 极轻微的阴影
   .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10rpx;
+    margin-bottom: 25rpx;
 
-    .shop-name {
-      font-size: 34rpx;
+    .card-header-start {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .order-id {
+      font-size: 26rpx;
+      color: #6b7280;
       font-weight: bold;
-      color: #333;
     }
 
-    .total-price {
-      font-size: 34rpx;
+    .order-date {
+      font-size: 20rpx;
+      color: #999;
+      margin-top: 4rpx;
+    }
+
+    .order-price {
+      font-size: 32rpx;
       font-weight: bold;
-      color: $primary-color;
+      color: #42b983;
     }
   }
 
-  .order-date {
-    display: block;
-    font-size: 28rpx;
-    color: #999;
-    margin-bottom: 40rpx;
-  }
-
-  .details-btn {
-    background-color: $primary-color;
-    color: #ffffff;
-    border-radius: 16rpx;
-    font-size: 30rpx;
-    height: 88rpx;
-    line-height: 88rpx;
-    border: none; // 去除小程序自带的边框
-
-    &::after {
-      border: none;
-    }
-
-    // 简单的点击缩放效果
-    &:active {
-      opacity: 0.9;
-      transform: scale(0.98);
-    }
-  }
-}
-
-.safe-area-bottom {
-  height: 50rpx;
-}
-
-.denied-container {
-  background-color: #ffffff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-// 导航栏样式
-.nav-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 60rpx 30rpx 20rpx;
-
-  .nav-title {
-    font-size: 34rpx;
-    font-weight: bold;
-    color: #1a1a1a;
-  }
-
-  .placeholder {
-    width: 48rpx;
-  }
-
-  // 用于居中标题
-}
-
-.content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0 60rpx 100rpx;
-}
-
-// 插画图标
-.illustration-box {
-  margin-bottom: 80rpx;
-
-  .circle-bg {
-    width: 460rpx;
-    height: 460rpx;
-    background-color: #e8f7f0;
-    border-radius: 50%;
+  .image-preview-box {
     display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .lock-icon {
-    width: 150rpx;
-    height: 150rpx;
-
-  }
-}
-
-// 文本区
-.text-section {
-  text-align: center;
-  margin-bottom: 100rpx;
-
-  .main-title {
-    font-size: 44rpx;
-    font-weight: bold;
-    color: #1a1a1a;
-    display: block;
+    justify-content: space-between;
+    align-items: flex-end;
     margin-bottom: 30rpx;
+
+    .image-list {
+      display: flex;
+      gap: 15rpx;
+
+      .img-wrapper {
+        position: relative;
+        width: 120rpx;
+        height: 120rpx;
+
+        .food-thumb {
+          width: 100%;
+          height: 100%;
+          border-radius: 16rpx;
+          background-color: #f5f5f5;
+        }
+
+        .more-mask {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.4);
+          color: #fff;
+          font-size: 24rpx;
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 16rpx;
+        }
+      }
+    }
+
+    .status-tag {
+      font-size: 24rpx;
+      padding: 6rpx 16rpx;
+      border-radius: 8rpx;
+
+      &.completed {
+        background-color: #e8f7f0;
+        color: $primary-color;
+      }
+
+      &.delivering {
+        background-color: #fff4e5;
+        color: #ff9800;
+      }
+    }
   }
 
-  .sub-desc {
-    font-size: 30rpx;
-    color: #95a5a6;
-    line-height: 1.6;
-    display: block;
-  }
-}
-
-// 按钮组
-.btn-group {
-  width: 100%;
-
-  .btn {
-    height: 110rpx;
-    line-height: 110rpx;
-    border-radius: 24rpx;
-    font-size: 32rpx;
-    font-weight: bold;
-    margin-bottom: 30rpx;
-    border: none;
+  .detail-btn {
+    background-color: #fff;
+    color: $primary-color;
+    border: 1rpx solid $primary-color;
+    border-radius: 40rpx;
+    font-size: 26rpx;
+    height: 70rpx;
+    line-height: 68rpx;
 
     &::after {
       border: none;
     }
   }
-
-  .btn-primary {
-    background-color: $primary-color;
-    color: #fff;
-    box-shadow: 0 10rpx 20rpx rgba(66, 185, 131, 0.2);
-  }
-
-  .btn-secondary {
-    background-color: #f1f5f9;
-    color: #1a1a1a;
-  }
-
-  .btn:active {
-    opacity: 0.9;
-    transform: scale(0.98);
-  }
 }
-</style>
+
+.safe-bottom {
+  height: 40rpx;
+} </style>
