@@ -169,16 +169,20 @@ $primary-color: #42b983;
   }
 
   .detail-btn {
-    background-color: #fff;
-    color: $primary-color;
-    border: 1rpx solid $primary-color;
-    border-radius: 40rpx;
-    font-size: 26rpx;
+    background-color: $primary-color;
+    color: #fff;
+    border-radius: 24rpx;
     height: 70rpx;
     line-height: 68rpx;
+    font-size: 26rpx;
+    font-weight: bold;
+    border: none;
+    margin-top: 20rpx;
+    box-shadow: 0 10rpx 20rpx rgba(66, 185, 131, 0.2);
 
-    &::after {
-      border: none;
+    &:active {
+      transform: scale(0.98);
+      opacity: 0.9;
     }
   }
 }
