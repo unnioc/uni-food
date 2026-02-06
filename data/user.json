@@ -3,7 +3,6 @@
     {
       "id": 1,
       "name": "Alex Johnson",
-      "email": "alex.j@example.com",
       "phone": "+1 (555) 000-1234",
       "avatar": "https://via.placeholder.com/150",
       "addresses": [
