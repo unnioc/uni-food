@@ -7,8 +7,10 @@ const state = reactive({
   isLogin: !!uni.getStorageSync('user'),
   banners: [],
   categories: [],
+  recommendList: [], // 新增推荐菜品数据
   menu: [],
   cart: [],
+  checkoutItems: [], // 结算时的临时商品列表
   orders: []
 })
 
@@ -31,14 +33,16 @@ const cartCount = computed(() => {
 // 1. 初始化数据 (首页调用)
 const init = async () => {
   try {
-    const [banners, categories, foodList] = await Promise.all([
+    const [banners, categories, foodList, recommendList] = await Promise.all([
       api.getBanners(),
       api.getCategories(),
-      api.getFoodList()
+      api.getFoodList(),
+      api.getRecommendList()
     ])
     state.banners = banners
     state.categories = categories
     state.menu = foodList
+    state.recommendList = recommendList
 
     // 如果已登录，加载用户数据
     if (state.isLogin) {
@@ -58,12 +62,25 @@ const init = async () => {
 const refreshUserData = async () => {
   if (!state.user) return
   try {
+    // 刷新购物车和订单
     const [cart, orders] = await Promise.all([
       api.getCart(state.user.id),
       api.getOrders(state.user.id)
     ])
     state.cart = cart
     state.orders = orders
+
+    // 尝试刷新用户信息（以便获取最新的 addresses）
+    // 注意：getUserByPhone 返回数组
+    const users = await api.getUserByPhone(state.user.phone)
+    if (users && users.length > 0) {
+      const latestUser = users[0]
+      // 保持登录凭证，只更新信息
+      // 剔除密码
+      const { password, ...safeUser } = latestUser
+      state.user = { ...state.user, ...safeUser }
+      uni.setStorageSync('user', state.user)
+    }
   } catch (e) {
     console.error('Refresh user data failed', e)
   }
@@ -79,8 +96,10 @@ const login = async (phone, password) => {
         // 登录成功
         state.user = user
         state.isLogin = true
-        // 仅持久化用户身份，不持久化购物车等业务数据
-        uni.setStorageSync('user', user)
+
+        // 安全处理：剔除密码后再存储
+        const { password: pwd, ...safeUser } = user
+        uni.setStorageSync('user', safeUser)
 
         await refreshUserData()
         return { success: true }
@@ -146,6 +165,54 @@ const updateUserProfile = async (updateData) => {
   }
 }
 
+// 地址管理: 新增地址
+const addAddress = async (addressData) => {
+  if (!state.isLogin || !state.user) return { success: false, message: 'Not logged in' }
+
+  let currentAddresses = state.user.addresses ? [...state.user.addresses] : []
+
+  // 如果设为默认，先把其他的取消默认
+  if (addressData.isDefault) {
+    currentAddresses.forEach(addr => addr.isDefault = false)
+  }
+
+  // 生成简单ID
+  const newAddress = {
+    id: Date.now(),
+    ...addressData
+  }
+
+  currentAddresses.push(newAddress)
+  return await updateUserProfile({ addresses: currentAddresses })
+}
+
+// 地址管理: 修改地址
+const updateAddress = async (addressData) => {
+  if (!state.isLogin || !state.user) return { success: false, message: 'Not logged in' }
+
+  let currentAddresses = [...(state.user.addresses || [])]
+  const index = currentAddresses.findIndex(a => a.id == addressData.id)
+
+  if (index === -1) return { success: false, message: 'Address not found' }
+
+  if (addressData.isDefault) {
+    currentAddresses.forEach(addr => addr.isDefault = false)
+  }
+
+  currentAddresses[index] = { ...currentAddresses[index], ...addressData }
+  return await updateUserProfile({ addresses: currentAddresses })
+}
+
+// 地址管理: 删除地址
+const deleteAddress = async (id) => {
+  if (!state.isLogin || !state.user) return { success: false, message: 'Not logged in' }
+
+  const currentAddresses = state.user.addresses || []
+  const newAddresses = currentAddresses.filter(a => a.id != id)
+
+  return await updateUserProfile({ addresses: newAddresses })
+}
+
 // 6. 加入购物车
 const addToCart = async (food) => {
   if (!state.isLogin) {
@@ -154,8 +221,8 @@ const addToCart = async (food) => {
   }
 
   // 判断购物车是否已存在
-  // 注意：foodList里的id和cart里的foodId对应
-  const existingItem = state.cart.find(item => item.foodId === food.id)
+  // 注意：foodList里的id和cart里的foodId对应 (使用 == 兼容字符串和数字类型的 ID)
+  const existingItem = state.cart.find(item => item.foodId == food.id)
 
   if (existingItem) {
     // 存在则数量+1
@@ -204,22 +271,44 @@ const clearCart = async () => {
 }
 
 // 8. 创建订单
-const createOrder = async (address) => {
+const createOrder = async (address, itemsToOrder = null) => {
   if (!state.isLogin) return
+
+  // 默认为购物车所有内容，但支持传入特定结算列表
+  const finalItems = itemsToOrder || state.cart
 
   const orderData = {
     userId: state.user.id,
     status: 'paid', // 简化直接为已支付
     createTime: new Date().toLocaleString(),
-    totalPrice: totalPrice.value,
+    totalPrice: totalPrice.value, // 注意: 这里如果只结算部分商品，totalPrice可能需要重新计算，建议在PaymentPage传过来正确的金额或在此重新计算
     address: address, // 将选中的地址快照存入
-    items: state.cart // 购物车当前内容的快照
+    items: finalItems // 购物车当前内容的快照
   }
 
-  await api.createOrder(orderData)
-  await clearCart() // 下单后清空购物车
+  // 重新计算总价以确保安全（防止前端UI显示和实际提交不一致）
+  const realTotal = finalItems.reduce((sum, item) => sum + (item.price * item.count), 0)
+  orderData.totalPrice = realTotal
+
+  const res = await api.createOrder(orderData)
+
+  // 下单后清空购物车中已购买的商品
+  // 如果是部分结算，只删除这部分；如果是全额，清空所有
+  if (itemsToOrder && itemsToOrder.length > 0) {
+    for (const item of itemsToOrder) {
+      await api.deleteCart(item.id)
+    }
+  } else {
+    await clearCart()
+  }
+
   await refreshUserData()
-  return true
+  return res // 返回创建的订单对象（包含生成的ID）
+}
+
+// 设置结算商品
+const setCheckoutItems = (items) => {
+  state.checkoutItems = items
 }
 
 export default {
@@ -236,6 +325,10 @@ export default {
   changeCartCount,
   clearCart,
   createOrder,
-  refreshUserData
+  setCheckoutItems,
+  refreshUserData,
+  addAddress,
+  updateAddress,
+  deleteAddress
 }
 

@@ -35,6 +35,9 @@ export const api = {
     return request({ url })
   },
 
+  // 获取推荐列表数据
+  getRecommendList: () => request({ url: '/recommend' }),
+
   // --- 购物车相关 (增删改查) ---
   // 1. 获取某用户的购物车
   getCart: (userId) => request({ url: `/carts?userId=${userId}` }),
@@ -62,6 +65,9 @@ export const api = {
   // --- 订单相关 ---
   // 获取某用户的订单
   getOrders: (userId) => request({ url: `/orders?userId=${userId}` }),
+
+  // 获取单笔订单详情
+  getOrderById: (orderId) => request({ url: `/orders/${orderId}` }),
 
   // 创建新订单
   createOrder: (orderData) => request({
