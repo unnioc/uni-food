@@ -1,6 +1,6 @@
 <template>
   <!-- 未登录 -->
-  <view v-if="isLoggin === false" class="denied-container">
+  <view v-if="!isLogin" class="denied-container">
     <view class="content">
       <!-- 中心插画图标 -->
       <view class="illustration-box">
@@ -24,7 +24,7 @@
   </view>
 
   <!-- 已登录 -->
-  <view v-if="isLoggin === true" class="cart-container">
+  <view v-if="isLogin" class="cart-container">
     <!-- 顶部操作栏 -->
     <view class="header-action">
       <text class="select-btn" @click="selectAllCart">全选</text>
@@ -34,7 +34,7 @@
       <!-- 购物车列表项 -->
       <view v-for="(item, index) in cartList" :key="item.id" class="cart-item">
         <!-- 复选框 -->
-        <checkbox :checked="item.checked" color="#42b983" @click="toggleCheck(index)" class="item-checkbox"/>
+        <checkbox :checked="item.checked" color="#42b983" @click="toggleCheck(index)" class="item-checkbox" />
         <!-- 商品信息 -->
         <view class="item-body">
           <view class="info-left">
@@ -65,145 +65,98 @@
     </view>
   </view>
   <!-- 自定义弹窗组件 -->
-  <CustomModal :visible="showClearModal" title="清空购物车?" content="您确定要清空购物车里的东西吗？"
-               icon="/static/ic_delete.png"
-               iconBg="#fff1f1" confirmText="清空" confirmColor="#e34848" @confirm="doClearCart"
-               @cancel="showClearModal = false"/>
+  <CustomModal :visible="showClearModal" title="清空购物车?" content="您确定要清空购物车里的东西吗？" icon="/static/ic_delete.png"
+    iconBg="#fff1f1" confirmText="清空" confirmColor="#e34848" @confirm="doClearCart" @cancel="showClearModal = false" />
 
 </template>
 
 <script setup>
-import {
-  ref,
-  computed
-} from 'vue';
+import { ref, computed, watch } from 'vue';
 import CustomModal from '@/components/customModal.vue'
+import store from '@/store/index.js'
 
-const isLoggin = ref(false);
+// 1. 登录状态
+const isLogin = computed(() => store.state.isLogin)
 
-// 1. 模拟购物车数据
-const cartList = ref([{
-  id: 1,
-  name: 'Organic Avocados',
-  price: 4.50,
-  count: 2,
-  checked: true
-}, {
-  id: 2,
-  name: 'Fresh Strawberries',
-  price: 3.00,
-  count: 1,
-  checked: true
-}, {
-  id: 3,
-  name: 'Whole Grain Bread',
-  price: 2.50,
-  count: 1,
-  checked: true
-}, {
-  id: 4,
-  name: 'Greek Yogurt',
-  price: 1.20,
-  count: 1,
-  checked: false
-}, {
-  id: 5,
-  name: 'Greek Salad',
-  price: 1.20,
-  count: 5,
-  checked: false
-}, {
-  id: 2,
-  name: 'Fresh Strawberries',
-  price: 3.00,
-  count: 1,
-  checked: true
-}, {
-  id: 3,
-  name: 'Whole Grain Bread',
-  price: 2.50,
-  count: 1,
-  checked: true
-}, {
-  id: 4,
-  name: 'Greek Yogurt',
-  price: 1.20,
-  count: 1,
-  checked: false
-}, {
-  id: 2,
-  name: 'Fresh Strawberries',
-  price: 3.00,
-  count: 1,
-  checked: true
-}, {
-  id: 3,
-  name: 'Whole Grain Bread',
-  price: 2.50,
-  count: 1,
-  checked: true
-}, {
-  id: 4,
-  name: 'Greek Yogurt',
-  price: 1.20,
-  count: 1,
-  checked: false
-}]);
-// 2. 计算总价 (教学核心：Computed)
+// 2. 购物车数据 & 选中状态管理
+const selectedIds = ref(new Set());
+
+// 监听购物车数据变化，默认全选新加入的项
+watch(() => store.state.cart, (newCart) => {
+  if (newCart && newCart.length > 0) {
+    newCart.forEach(item => {
+      // 默认全选
+      if (!selectedIds.value.has(item.id)) {
+        selectedIds.value.add(item.id);
+      }
+    });
+  }
+}, { immediate: true, deep: true });
+
+// 结合 Store 数据和本地选中状态，生成列表供渲染
+const cartList = computed(() => {
+  return (store.state.cart || []).map(item => ({
+    ...item,
+    checked: selectedIds.value.has(item.id)
+  }));
+});
+
+// 2. 计算总价
 const totalPrice = computed(() => {
   return cartList.value.reduce((total, item) => {
     return item.checked ? total + (item.price * item.count) : total;
   }, 0);
 });
+
 // 3. 改变数量
 const changeCount = (index, delta) => {
   const item = cartList.value[index];
-  if (item.count + delta > 0) {
-    item.count += delta;
-  } else {
-    // 教学点：如果数量小于1可以询问是否删除
-    uni.showModal({
-      title: 'Tip',
-      content: 'Remove this item?',
-      success: (res) => {
-        if (res.confirm) cartList.value.splice(index, 1);
-      }
-    });
-  }
+  // 调用 Store 的方法
+  store.changeCartCount(item.id, delta);
 };
+
 // 4. 切换选中状态
 const toggleCheck = (index) => {
-  cartList.value[index].checked = !cartList.value[index].checked;
+  const item = cartList.value[index];
+  if (selectedIds.value.has(item.id)) {
+    selectedIds.value.delete(item.id);
+  } else {
+    selectedIds.value.add(item.id);
+  }
 };
+
 // 5.全选购物车
 const selectAllCart = () => {
   const isAllChecked = cartList.value.every(item => item.checked)
-  cartList.value.forEach(item => {
-    item.checked = !isAllChecked
-  })
+  if (isAllChecked) {
+    selectedIds.value.clear()
+  } else {
+    store.state.cart.forEach(item => selectedIds.value.add(item.id))
+  }
 }
 
 // 6. 清空购物车
-/* const clearCart = () => {
-  uni.showModal({
-    title: '清空购物车',
-    content: '您确定要清空购物车吗?',
-    success: (res) => {
-      if (res.confirm) cartList.value = [];
-    }
-  });
-}; */
-
 const showClearModal = ref(false);
 const confirmClear = () => {
+  if (cartList.value.length === 0) return;
   showClearModal.value = true;
 };
-const doClearCart = () => {
-  // 执行清空购物车逻辑
-  cartList.value = []
+
+const doClearCart = async () => {
+  await store.clearCart()
+  selectedIds.value.clear()
   showClearModal.value = false
 };
-// 7. 去结算
+
+// 7. 跳转逻辑
+const goToLogin = () => {
+  uni.navigateTo({ url: '/packageProfile/LoginPage/LoginPage' });
+};
+
+const goHome = () => {
+  uni.switchTab({ url: '/pages/index/index' });
+};
+
 const goCheckout = () => {
   if (totalPrice.value === 0) {
     uni.showToast({
@@ -212,19 +165,19 @@ const goCheckout = () => {
     });
     return;
   }
+
+  // 过滤出选中的商品
+  const checkoutItems = cartList.value.filter(item => item.checked)
+  store.setCheckoutItems(checkoutItems)
+
+  // 只有被选中的才应该去结算，这里是个逻辑简略点
   uni.navigateTo({
     url: '/packageOrder/PaymentPage/PaymentPage'
   });
 };
-
-
-const goToLogin = () => {
-  uni.navigateTo({url: '/packageProfile/LoginPage/LoginPage'});
-};
-const goHome = () => {
-  uni.switchTab({url: '/pages/index/index'});
-}
 </script>
+
+
 
 <style lang="scss">
 $primary-color: #42b983;

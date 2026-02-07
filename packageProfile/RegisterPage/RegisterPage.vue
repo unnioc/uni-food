@@ -14,26 +14,29 @@
         <view class="input-group">
           <text class="label">Full Name</text>
           <input class="input" v-model="regForm.username" placeholder="Enter your full name"
-                 placeholder-class="placeholder"/></view>
+            placeholder-class="placeholder" />
+        </view>
         <view class="input-group">
-          <text class="label">Phone/Email</text>
+          <text class="label">Phone</text>
           <input class="input" v-model="regForm.account" placeholder="Enter your phone or email"
-                 placeholder-class="placeholder"/></view>
+            placeholder-class="placeholder" />
+        </view>
         <view class="input-group">
           <text class="label">Password</text>
-          <view class="input-wrapper"><input class="input" v-model="regForm.password" :password="!showPwd"
-                                             placeholder="Create a password" placeholder-class="placeholder"/>
+          <view class="input-wrapper">
+            <input class="input" v-model="regForm.password" :password="!showPwd"
+              placeholder="Create a password" placeholder-class="placeholder" />
             <uni-icons :type="showPwd ? 'eye-filled' : 'eye-slash-filled'" size="20" color="#cbd5e0"
-                       @click="showPwd = !showPwd"></uni-icons>
+              @click="showPwd = !showPwd"></uni-icons>
           </view>
         </view>
         <view class="input-group">
           <text class="label">Confirm Password</text>
           <view class="input-wrapper">
             <input class="input" v-model="regForm.confirmPassword" :password="!showConfirmPwd"
-                   placeholder="Confirm your password" placeholder-class="placeholder"/>
+              placeholder="Confirm your password" placeholder-class="placeholder" />
             <uni-icons :type="showConfirmPwd ? 'eye-filled' : 'eye-slash-filled'" size="20" color="#cbd5e0"
-                       @click="showConfirmPwd = !showConfirmPwd"></uni-icons>
+              @click="showConfirmPwd = !showConfirmPwd"></uni-icons>
           </view>
         </view>
         <button class="submit-btn" @click="handleRegister">Sign Up</button>
@@ -52,37 +55,57 @@ import {
   reactive,
   ref
 } from 'vue';
+import store from '@/store/index.js'; // 1. 引入 store
+
 // 状态管理
 const showPwd = ref(false);
 const showConfirmPwd = ref(false);
-const regForm = reactive({username: '', account: '', password: '', confirmPassword: ''});
+const regForm = reactive({ username: '', account: '', password: '', confirmPassword: '' });
 const goBack = () => uni.navigateBack();
-const handleRegister = () => {
+const handleRegister = async () => {
   // 基础逻辑校验
   if (!regForm.username || !regForm.account || !regForm.password) {
-    uni.showToast({title: 'Please fill all fields', icon: 'none'});
+    uni.showToast({ title: 'Please fill all fields', icon: 'none' });
     return;
   }
   if (regForm.password !== regForm.confirmPassword) {
-    uni.showToast({title: 'Passwords do not match', icon: 'none'});
+    uni.showToast({ title: 'Passwords do not match', icon: 'none' });
     return;
   }
-  uni.showLoading({title: 'Creating account...'});
-  // 模拟注册成功后的逻辑
-  setTimeout(() => {
-    uni.hideLoading();
-    uni.showToast({
-      title: 'Success!',
-      icon: 'success',
-      success: () => {
-        // 注册成功后跳转登录
-        setTimeout(() => goToLogin(), 1500);
-      }
+
+  uni.showLoading({ title: 'Creating account...' });
+
+  try {
+    // 2. 调用 store 的注册逻辑
+    const res = await store.register({
+      phone: regForm.account,
+      password: regForm.password,
+      username: regForm.username
     });
-  }, 1500);
+
+    uni.hideLoading();
+
+    if (res.success) {
+      uni.showToast({
+        title: 'Success!',
+        icon: 'success',
+        duration: 1500
+      });
+      // 注册成功后跳转登录
+      setTimeout(() => goToLogin(), 1500);
+    } else {
+      uni.showToast({
+        title: res.message || 'Registration failed',
+        icon: 'none'
+      });
+    }
+  } catch (e) {
+    uni.hideLoading();
+    uni.showToast({ title: 'Error creating account', icon: 'none' });
+  }
 };
 const goToLogin = () => {
-  uni.redirectTo({url: '/packageProfile/LoginPage/LoginPage'});
+  uni.redirectTo({ url: '/packageProfile/LoginPage/LoginPage' });
 };
 </script>
 
@@ -211,4 +234,5 @@ $primary-color: #42b983;
     font-weight: bold;
     margin-left: 8rpx;
   }
-} </style>
+}
+</style>

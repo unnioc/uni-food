@@ -74,7 +74,7 @@
         <view class="menu-item" @click="navigateTo('/packageProfile/HelpCenterPage/HelpCenterPage')">
           <view class="item-left">
             <view class="icon-bg active">
-              <image class="icon" src="/static/ic_help.png"/>
+              <image class="icon" src="/static/ic_help.png" />
             </view>
             <text class="item-name">Help Center</text>
           </view>
@@ -84,7 +84,7 @@
         <view class="menu-item" @click="navigateTo('/pages/about/about')">
           <view class="item-left">
             <view class="icon-bg active">
-              <image class="icon" src="/static/ic_tip.png"/>
+              <image class="icon" src="/static/ic_tip.png" />
             </view>
             <text class="item-name">About Uni-Food</text>
           </view>
@@ -98,15 +98,16 @@
     <!-- 1. 用户信息头部 -->
     <view class="user-header">
       <view class="avatar-box">
-        <image class="avatar" src="/static/square.jpg" mode="aspectFill"></image>
+        <!-- todo:待修改默认头像图片 -->
+        <image class="avatar" :src="user.avatar || '/static/square.jpg'" mode="aspectFill"></image>
       </view>
-      <text class="user-name">Endorphin</text>
-      <text class="user-email">Endorphin@example.com</text>
+      <text class="user-name">{{ user.nickName || 'User' }}</text>
+      <text class="user-email">{{ user.phone || '' }}</text>
     </view>
     <!-- 2. 导航菜单列表 -->
     <view class="menu-list">
       <view v-for="(item, index) in menuItems" :key="index" class="menu-item"
-            @click="index==0?switchTab(item.path):navigateTo(item.path)">
+        @click="index == 0 ? switchTab(item.path) : navigateTo(item.path)">
         <view class="item-left">
           <image class="icon" :src="item.image" mode=""></image>
           <text class="item-title">{{ item.title }}</text>
@@ -120,37 +121,31 @@
     </view>
   </view>
   <!-- 自定义弹窗组件 -->
-  <CustomModal :visible="showExitModal" title="退出登录" content="您确定要退出当前登录吗？" icon="/static/ic_tip.png"
-               iconBg="#ecf8f2"
-               confirmText="确定" confirmColor="#42b983" @confirm="doExit" @cancel="showExitModal = false"
-               cancel-text="取消"/>
+  <CustomModal :visible="showExitModal" title="退出登录" content="您确定要退出当前登录吗？" icon="/static/ic_tip.png" iconBg="#ecf8f2"
+    confirmText="确定" confirmColor="#42b983" @confirm="doExit" @cancel="showExitModal = false" cancel-text="取消" />
 </template>
 
 <script setup>
-import {
-  ref
-} from 'vue';
+import { computed, ref } from 'vue';
 import CustomModal from '@/components/customModal.vue'
+import store from '@/store/index.js'
 
-//用户登录状态
-const isLogin = ref(false)
+// 用户登录状态 (响应式绑定 Store)
+const isLogin = computed(() => store.state.isLogin)
+const user = computed(() => store.state.user || {})
 
 const showExitModal = ref(false)
 const comfirmExit = () => {
   showExitModal.value = true
 }
 const doExit = () => {
-  // todo:待完成 退出账号
+  // 调用 Store 的退出方法
+  store.logout()
   showExitModal.value = false
   uni.showToast({
     icon: 'none',
-    title: '退出登录成功,正在跳转至首页...'
+    title: '退出登录成功'
   })
-  setTimeout(() => {
-    uni.switchTab({
-      url: '/pages/index/index'
-    })
-  }, 1000)
 }
 
 // 菜单配置数据，方便扩展
@@ -208,7 +203,7 @@ const switchTab = (path) => {
 // };
 
 const goToLogin = () => {
-  uni.navigateTo({url: '/packageProfile/LoginPage/LoginPage'});
+  uni.navigateTo({ url: '/packageProfile/LoginPage/LoginPage' });
 };
 
 const showLoginTip = () => {

@@ -3,143 +3,167 @@
 		<!-- 表单列表 -->
 		<view class="form-list">
 			<view class="form-item">
-				<text class="label">Recipient</text>
-				<input class="input" v-model="formData.name" placeholder="Alex Johnson" />
+				<text class="label">收货人</text>
+				<input class="input" v-model="formData.name" placeholder="填写收货人姓名" />
 			</view>
 			<view class="form-item">
-				<text class="label">Phone</text>
-				<input class="input" v-model="formData.phone" placeholder="138-0000-0000" type="number" />
+				<text class="label">手机号</text>
+				<input class="input" v-model="formData.phone" placeholder="填写电话号码" type="number" />
 			</view>
 			<view class="form-item">
-				<text class="label">Area</text>
+				<text class="label">地址</text>
 				<view class="picker-box" @click="chooseArea">
-					<text class="picker-text">{{ formData.area || 'California, San Francisco' }}</text>
+					<text class="picker-text">{{ formData.area || '虚拟地址' }}</text>
 					<uni-icons type="right" size="14" color="#ccc"></uni-icons>
 				</view>
 			</view>
 			<view class="form-item align-start">
-				<text class="label">Address</text>
-				<textarea class="textarea" v-model="formData.address"
-					placeholder="123 Tech Avenue, Building 4, Room 201" auto-height />
+				<text class="label">门牌号</text>
+				<textarea class="textarea" v-model="formData.address" placeholder="填写详细地址，例：1号楼102" auto-height />
 			</view>
 		</view>
 		<!-- 设置默认地址 -->
 		<view class="default-section">
-			<text>Set as default address</text>
+			<text>设置为默认地址</text>
 			<switch :checked="formData.isDefault" color="#42b983" @change="formData.isDefault = $event.detail.value" />
 		</view>
 		<!-- 底部操作 -->
 		<view class="footer">
 			<button class="btn-save" @click="saveAddress">Save Address</button>
-			<view class="btn-delete" @click="deleteAddress">Delete Address</view>
 		</view>
 	</view>
 </template>
 
 <script setup>
-	import {
-		ref
-	} from 'vue';
-	const formData = ref({
-		name: '',
-		phone: '',
-		area: '',
-		address: '',
-		isDefault: true
-	});
-	const saveAddress = () => {
+import {
+	ref
+} from 'vue';
+import store from '@/store/index.js';
+
+const formData = ref({
+	name: '',
+	phone: '',
+	area: '',
+	address: '',
+	isDefault: false // Changed default to false, usually better for new adds unless specified
+});
+
+const chooseArea = () => {
+	// Mock area chooser or simple placeholder action
+	uni.showToast({ title: '地址选择模拟数据', icon: 'none' });
+	formData.value.area = "虚拟地址";
+};
+
+const saveAddress = async () => {
+	if (!formData.value.name || !formData.value.phone || !formData.value.address) {
+		uni.showToast({ title: 'Please fill required fields', icon: 'none' });
+		return;
+	}
+
+	// Construct address object matching the system structure
+	const addressData = {
+		name: formData.value.name,
+		phone: formData.value.phone,
+		// Combine area and address detail if needed, or just use address as detail
+		detail: (formData.value.area ? formData.value.area + ' ' : '') + formData.value.address,
+		isDefault: formData.value.isDefault
+	};
+
+	const res = await store.addAddress(addressData);
+
+	if (res.success) {
 		uni.showToast({
 			title: 'Saved Successfully',
 			icon: 'success'
 		});
-	};
-	const deleteAddress = () => {
-		uni.showModal({
-			title: 'Delete?',
-			content: 'Are you sure you want to delete this address?',
-			success: (res) => {
-				if (res.confirm) console.log('Deleted');
-			}
+		setTimeout(() => {
+			uni.navigateBack();
+		}, 1000);
+	} else {
+		uni.showToast({
+			title: res.message || 'Error',
+			icon: 'none'
 		});
-	};
+	}
+};
 </script>
 
 <style lang="scss">
-	.container {
-		background-color: #f8f8f8;
-		min-height: 100vh;
-		padding-top: 20rpx;
+.container {
+	background-color: #f8f8f8;
+	min-height: 100vh;
+	padding-top: 20rpx;
+}
+
+.form-list {
+	background-color: #fff;
+	padding: 0 30rpx;
+}
+
+.form-item {
+	display: flex;
+	align-items: center;
+	padding: 35rpx 0;
+	border-bottom: 1rpx solid #eee;
+
+	&.align-start {
+		align-items: flex-start;
 	}
 
-	.form-list {
-		background-color: #fff;
-		padding: 0 30rpx;
-	}
-
-	.form-item {
-		display: flex;
-		align-items: center;
-		padding: 35rpx 0;
-		border-bottom: 1rpx solid #eee;
-
-		&.align-start {
-			align-items: flex-start;
-		}
-
-		.label {
-			width: 180rpx;
-			font-size: 30rpx;
-			color: #333;
-		}
-
-		.input,
-		.picker-box,
-		.textarea {
-			flex: 1;
-			font-size: 30rpx;
-		}
-
-		.picker-box {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-		}
-
-		.textarea {
-			min-height: 120rpx;
-		}
-	}
-
-	.default-section {
-		background-color: #fff;
-		margin-top: 20rpx;
-		padding: 30rpx;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+	.label {
+		width: 180rpx;
 		font-size: 30rpx;
 		color: #333;
 	}
 
-	.footer {
-		margin-top: 100rpx;
-		padding: 0 40rpx;
-
-		.btn-save {
-			background-color: #42b983;
-			color: #fff;
-			border-radius: 50rpx;
-			height: 100rpx;
-			line-height: 100rpx;
-			font-weight: bold;
-			margin-bottom: 40rpx;
-			border: none;
-		}
-
-		.btn-delete {
-			text-align: center;
-			color: #999;
-			font-size: 28rpx;
-		}
+	.input,
+	.picker-box,
+	.textarea {
+		flex: 1;
+		font-size: 30rpx;
 	}
+
+	.picker-box {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.textarea {
+		min-height: 120rpx;
+	}
+}
+
+.default-section {
+	background-color: #fff;
+	margin-top: 20rpx;
+	padding: 30rpx;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 30rpx;
+	color: #333;
+}
+
+.footer {
+	margin-top: 100rpx;
+	padding: 0 40rpx;
+
+	.btn-save {
+		background-color: #42b983;
+		color: #fff;
+		border-radius: 50rpx;
+		height: 100rpx;
+		line-height: 100rpx;
+		font-weight: bold;
+		margin-bottom: 40rpx;
+		border: none;
+	}
+
+	.btn-delete {
+		text-align: center;
+		color: #999;
+		font-size: 28rpx;
+	}
+}
 </style>

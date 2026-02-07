@@ -14,15 +14,16 @@
         <view class="input-group">
           <text class="label">Phone/Email</text>
           <input class="input" v-model="loginForm.account" placeholder="Enter your phone or email"
-                 placeholder-class="placeholder"/></view>
+            placeholder-class="placeholder" />
+        </view>
         <view class="input-group">
           <view class="label-row">
             <text class="label">Password</text>
             <text class="forgot-link" @click="forgetPws">Forgot Password?</text>
           </view>
           <view class="input-wrapper">
-            <input class="input" v-model="loginForm.password" :password="!showPwd"
-                   placeholder="Enter your password" placeholder-class="placeholder"/>
+            <input class="input" v-model="loginForm.password" :password="!showPwd" placeholder="Enter your password"
+              placeholder-class="placeholder" />
           </view>
         </view>
         <button class="login-btn" @click="handleLogin">Login</button>
@@ -52,26 +53,38 @@
   </view>
 </template>
 
-<script setup> import {reactive, ref} from 'vue';
+<script setup>import { reactive, ref } from 'vue';
+import store from '@/store/index.js';
 
 const showPwd = ref(false);
-const loginForm = reactive({account: '', password: ''});
-const handleLogin = () => {
+const loginForm = reactive({ account: '', password: '' });
+const handleLogin = async () => {
   if (!loginForm.account || !loginForm.password) {
-    uni.showToast({title: 'Please fill all fields', icon: 'none'});
+    uni.showToast({ title: 'Please fill all fields', icon: 'none' });
     return;
   }
-  uni.showLoading({title: 'Logging in...'});
-  // 模拟登录逻辑
-  setTimeout(() => {
+  uni.showLoading({ title: 'Logging in...' });
+
+  try {
+    const res = await store.login(loginForm.account, loginForm.password);
     uni.hideLoading();
-    uni.setStorageSync('isLogin', true);
-    // 设置登录标识
-    uni.switchTab({url: '/pages/index/index'});
-  }, 1500);
+
+    if (res.success) {
+      uni.showToast({ title: 'Welcome back!', icon: 'success' });
+      // 登录成功跳转
+      setTimeout(() => {
+        uni.switchTab({ url: '/pages/index/index' });
+      }, 500);
+    } else {
+      uni.showToast({ title: res.message || 'Login failed', icon: 'none' });
+    }
+  } catch (error) {
+    uni.hideLoading();
+    uni.showToast({ title: 'Authentication error', icon: 'none' });
+  }
 };
 const goToRegister = () => {
-  uni.navigateTo({url: '/packageProfile/RegisterPage/RegisterPage'});
+  uni.navigateTo({ url: '/packageProfile/RegisterPage/RegisterPage' });
 };
 
 const forgetPws = () => {
@@ -262,4 +275,5 @@ $primary-color: #42b983;
     font-weight: bold;
     margin-left: 8rpx;
   }
-} </style>
+}
+</style>
