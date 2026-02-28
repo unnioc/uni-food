@@ -8,6 +8,7 @@ const BASE_URL = 'http://localhost:3000'
  * @param {string} options.method 请求方法 (GET, POST等)
  * @param {Object} options.data 请求数据
  */
+
 const request = (options) => {
   return new Promise((resolve, reject) => {
     uni.request({
