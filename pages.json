@@ -1,154 +1,150 @@
 {
-  "pages": [
-    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-    {
-      "path": "pages/index/index",
-      "style": {
-        "navigationBarTitleText": "首页"
-      }
-    },
-    {
-      "path": "pages/OrderPage/OrderPage",
-      "style": {
-        "navigationBarTitleText": "历史订单"
-      }
-    },
-    {
-      "path": "pages/CartPage/CartPage",
-      "style": {
-        "navigationBarTitleText": "购物车"
-      }
-    },
-    {
-      "path": "pages/ProfilePage/ProfilePage",
-      "style": {
-        "navigationBarTitleText": "我的"
-      }
-    }
-  ],
-  "tabBar": {
-    "selectedColor": "#42b983",
-    "color": "#999",
-    "backgroundColor": "#ffffff",
-    "list": [
-      {
-        "iconPath": "/static/tabbar_index.png",
-        "selectedIconPath": "/static/tabbar_index_active.png",
-        "pagePath": "pages/index/index",
-        "text": "首页"
-      },
-      {
-        "iconPath": "/static/tabbar_order.png",
-        "selectedIconPath": "/static/tabbar_order_active.png",
-        "pagePath": "pages/OrderPage/OrderPage",
-        "text": "订单"
-      },
-      {
-        "iconPath": "/static/tabbar_cart.png",
-        "selectedIconPath": "/static/tabbar_cart_active.png",
-        "pagePath": "pages/CartPage/CartPage",
-        "text": "购物车"
-      },
-      {
-        "iconPath": "/static/tabbar_profile.png",
-        "selectedIconPath": "/static/tabbar_profile_active.png",
-        "pagePath": "pages/ProfilePage/ProfilePage",
-        "text": "我的"
-      }
-    ]
-  },
-  "globalStyle": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
-  },
-  "easycom": {
-    "autoscan": true,
-    "custom": {}
-  },
-  "subPackages": [
-    {
-      "root": "packageProfile",
-      "pages": [
-        {
-          "path": "SettingPage/SettingPage",
-          "style": {
-            "navigationBarTitleText": "设置个人信息"
-          }
-  		},
+	"pages": [
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "MyAddressPage/MyAddressPage",
+			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "我的地址"
+				"navigationBarTitleText": "首页"
 			}
 		},
 		{
-			"path": "EditAddressPage/EditAddressPage",
+			"path": "pages/OrderPage/OrderPage",
 			"style": {
-				"navigationBarTitleText": "修改地址"
+				"navigationBarTitleText": "历史订单"
 			}
 		},
 		{
-			"path": "AddAddressPage/AddAddressPage",
+			"path": "pages/CartPage/CartPage",
 			"style": {
-				"navigationBarTitleText": "添加地址"
+				"navigationBarTitleText": "购物车"
 			}
 		},
 		{
-			"path": "MyCouponsPage/MyCouponsPage",
+			"path": "pages/ProfilePage/ProfilePage",
 			"style": {
-				"navigationBarTitleText": "我的优惠券"
-			}
-		},
-		{
-			"path": "HelpCenterPage/HelpCenterPage",
-			"style": {
-				"navigationBarTitleText": "帮助中心"
-			}
-		},
-		{
-			"path": "LoginPage/LoginPage",
-			"style": {
-				"navigationBarTitleText": "登录"
-			}
-		},
-		{
-			"path": "RegisterPage/RegisterPage",
-			"style": {
-				"navigationBarTitleText": "注册"
+				"navigationBarTitleText": "我的"
 			}
 		}
-      ]
-    },
-    {
-      "root": "packageOrder",
-      "pages": [
-        {
-          "path": "OrderDetailPage/OrderDetailPage",
-          "style": {
-            "navigationBarTitleText": "订单详情"
-          }
-        },
-        {
-          "path": "PaymentPage/PaymentPage",
-          "style": {
-            "navigationBarTitleText": "支付订单"
-          }
-        },
-        {
-          "path": "PaymentSuccessfulPage/PaymentSuccessfulPage",
-          "style": {
-            "navigationBarTitleText": "支付情况"
-          }
-        },
-        {
-          "path": "PaymentFailedPage/PaymentFailedPage",
-          "style": {
-            "navigationBarTitleText": "支付失败"
-          }
-        }
-      ]
-    }
-  ]
+	],
+	"tabBar": {
+		"selectedColor": "#42b983",
+		"color": "#999",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "/static/tabbar_index.png",
+				"selectedIconPath": "/static/tabbar_index_active.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/OrderPage/OrderPage",
+				"iconPath": "/static/tabbar_order.png",
+				"selectedIconPath": "/static/tabbar_order_active.png",
+				"text": "订单"
+			},
+			{
+				"pagePath": "pages/CartPage/CartPage",
+				"iconPath": "/static/tabbar_cart.png",
+				"selectedIconPath": "/static/tabbar_cart_active.png",
+				"text": "购物车"
+			},
+			{
+				"pagePath": "pages/ProfilePage/ProfilePage",
+				"iconPath": "/static/tabbar_profile.png",
+				"selectedIconPath": "/static/tabbar_profile_active.png",
+				"text": "我的"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"easycom": {
+		"autoscan": true,
+		"custom": {}
+	},
+	"subPackages": [{
+			"root": "packageProfile",
+			"pages": [{
+					"path": "SettingPage/SettingPage",
+					"style": {
+						"navigationBarTitleText": "设置个人信息"
+					}
+				},
+				{
+					"path": "MyAddressPage/MyAddressPage",
+					"style": {
+						"navigationBarTitleText": "我的地址"
+					}
+				},
+				{
+					"path": "EditAddressPage/EditAddressPage",
+					"style": {
+						"navigationBarTitleText": "修改地址"
+					}
+				},
+				{
+					"path": "AddAddressPage/AddAddressPage",
+					"style": {
+						"navigationBarTitleText": "添加地址"
+					}
+				},
+				{
+					"path": "MyCouponsPage/MyCouponsPage",
+					"style": {
+						"navigationBarTitleText": "我的优惠券"
+					}
+				},
+				{
+					"path": "HelpCenterPage/HelpCenterPage",
+					"style": {
+						"navigationBarTitleText": "帮助中心"
+					}
+				},
+				{
+					"path": "LoginPage/LoginPage",
+					"style": {
+						"navigationBarTitleText": "登录"
+					}
+				},
+				{
+					"path": "RegisterPage/RegisterPage",
+					"style": {
+						"navigationBarTitleText": "注册"
+					}
+				}
+			]
+		},
+		{
+			"root": "packageOrder",
+			"pages": [{
+					"path": "OrderDetailPage/OrderDetailPage",
+					"style": {
+						"navigationBarTitleText": "订单详情"
+					}
+				},
+				{
+					"path": "PaymentPage/PaymentPage",
+					"style": {
+						"navigationBarTitleText": "支付订单"
+					}
+				},
+				{
+					"path": "PaymentSuccessfulPage/PaymentSuccessfulPage",
+					"style": {
+						"navigationBarTitleText": "支付情况"
+					}
+				},
+				{
+					"path": "PaymentFailedPage/PaymentFailedPage",
+					"style": {
+						"navigationBarTitleText": "支付失败"
+					}
+				}
+			]
+		}
+	]
 }
