@@ -6,7 +6,7 @@
 				<view class="card-top">
 					<view class="user-info">
 						<text class="user-name">{{ item.name }}</text>
-						<text v-if="item.isDefault" class="default-tag">DEFAULT</text>
+						<text v-if="item.isDefault" class="default-tag">默认</text>
 					</view>
 					<text class="user-phone">{{ item.phone }}</text>
 				</view>
@@ -15,11 +15,11 @@
 				<view class="card-actions">
 					<view class="action-btn" @click="editAddress(item)">
 						<uni-icons type="compose" size="18" color="#666"></uni-icons>
-						<text class="btn-text">Edit</text>
+						<text class="btn-text">编辑</text>
 					</view>
 					<view class="action-btn delete" @click="confirmDelete(item.id)">
 						<uni-icons type="trash" size="18" color="#ff5252"></uni-icons>
-						<text class="btn-text">Delete</text>
+						<text class="btn-text">删除</text>
 					</view>
 				</view>
 			</view>
@@ -37,9 +37,9 @@
 
 	</view>
 	<!-- 自定义弹窗组件 -->
-	<CustomModal :visible="showDeleteModal" title="Delete Address?"
-		content="Are you sure you want to delete this address? This action cannot be undone." icon="/static/ic_delete.png"
-		iconBg="#fff1f1" confirmText="Delete" confirmColor="#e34848" @confirm="doDelete"
+	<CustomModal :visible="showDeleteModal" title="删除地址"
+		content="确定要删除该地址吗？此操作将不可逆。" icon="/static/ic_delete.png"
+		iconBg="#fff1f1" confirmText="删除" cancel-text="取消" confirmColor="#e34848" @confirm="doDelete"
 		@cancel="showDeleteModal = false" />
 </template>
 
@@ -102,11 +102,11 @@ const doDelete = async () => {
 	if (res.success) {
 		showDeleteModal.value = false;
 		uni.showToast({
-			title: 'Deleted'
+			title: '删除成功'
 		});
 	} else {
 		uni.showToast({
-			title: 'Delete Failed',
+			title: '删除失败',
 			icon: 'error'
 		});
 	}

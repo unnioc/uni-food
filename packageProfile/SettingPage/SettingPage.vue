@@ -8,27 +8,27 @@
 					<uni-icons type="camera-filled" size="16" color="#fff"></uni-icons>
 				</view>
 			</view>
-			<text class="change-text" @click="chooseImage">Change Photo</text>
+			<text class="change-text" @click="chooseImage">选择照片</text>
 		</view>
 		<!-- 2. 信息表单区 -->
 		<view class="form-section">
 			<view class="form-item">
-				<text class="label">User Name</text>
-				<input class="input" v-model="userInfo.name" placeholder="Enter your name" />
+				<text class="label">昵称</text>
+				<input class="input" v-model="userInfo.name" placeholder="请输入昵称" />
 			</view>
 			<view class="form-item">
-				<text class="label">Email Address</text>
-				<input class="input" v-model="userInfo.email" placeholder="Enter your email" />
+				<text class="label">邮箱地址</text>
+				<input class="input" v-model="userInfo.email" placeholder="请输入邮箱地址" />
 			</view>
 			<view class="form-item">
-				<text class="label">Phone</text>
-				<input class="input" v-model="userInfo.phone" placeholder="Enter your phone" />
+				<text class="label">手机号</text>
+				<input class="input" v-model="userInfo.phone" placeholder="请输入手机号" />
 			</view>
 		</view>
 		<!-- 3. 保存按钮 -->
 		<view class="footer">
-			<button class="confirm-btn" @click="saveProfile">Confirm Changes</button>
-			<text class="footer-tip">Updating your profile helps us provide a better food delivery experience.</text>
+			<button class="confirm-btn" @click="saveProfile">保存更改</button>
+			<text class="footer-tip">更新您的个人资料有助于我们为您提供更优质的服务。</text>
 		</view>
 	</view>
 </template>
@@ -72,12 +72,12 @@ const chooseImage =
 
 const saveProfile = async () => {
 	if (!store.state.isLogin) {
-		uni.showToast({ title: 'Not logged in', icon: 'none' });
+		uni.showToast({ title: '未登录', icon: 'none' });
 		return;
 	}
 
 	uni.showLoading({
-		title: 'Saving...'
+		title: '保存中...'
 	});
 
 	const updateData = {
@@ -93,7 +93,7 @@ const saveProfile = async () => {
 
 	if (res.success) {
 		uni.showToast({
-			title: 'Profile Updated',
+			title: '更新成功',
 			icon: 'success',
 			success() {
 				setTimeout(() => {
@@ -103,8 +103,8 @@ const saveProfile = async () => {
 		});
 	} else {
 		uni.showToast({
-			icon: 'error',
-			title: res.message || 'Update Failed'
+			icon: '错误',
+			title: res.message || '更新失败'
 		});
 	}
 };

@@ -16,12 +16,12 @@
 		</view>
 		<!-- 2. 文本提示 -->
 		<view class="text-group">
-			<text class="main-title">No coupons available</text>
-			<text class="sub-title">Check back later for promotions and special offers</text>
+			<text class="main-title">暂无可用优惠券</text>
+			<text class="sub-title">稍后请关注以获取促销信息和特别优惠。</text>
 		</view>
 		<!-- 3. 操作按钮 -->
 		<view class="btn-section">
-			<button class="home-btn" @click="goHome">Back to Home</button>
+			<button class="home-btn" @click="goHome">返回首页</button>
 		</view>
 	</view>
 </template>

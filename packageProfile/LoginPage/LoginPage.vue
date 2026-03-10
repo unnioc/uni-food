@@ -6,27 +6,27 @@
         <view class="brand-logo">
           <image src="/static/ic_logo_white.png"></image>
         </view>
-        <text class="main-title">Welcome Back</text>
-        <text class="sub-title">Log in to your student account</text>
+        <text class="main-title">欢迎来到Uni-food</text>
+        <text class="sub-title">登录您的账号</text>
       </view>
       <!-- 3. 登录表单 -->
       <view class="form-section">
         <view class="input-group">
-          <text class="label">Phone/Email</text>
-          <input class="input" v-model="loginForm.account" placeholder="Enter your phone or email"
+          <text class="label">手机号</text>
+          <input class="input" v-model="loginForm.account" placeholder="请输入手机号"
             placeholder-class="placeholder" />
         </view>
         <view class="input-group">
           <view class="label-row">
-            <text class="label">Password</text>
-            <text class="forgot-link" @click="forgetPws">Forgot Password?</text>
+            <text class="label">密码</text>
+            <text class="forgot-link" @click="forgetPws">忘记密码?</text>
           </view>
           <view class="input-wrapper">
-            <input class="input" v-model="loginForm.password" :password="!showPwd" placeholder="Enter your password"
+            <input class="input" v-model="loginForm.password" :password="!showPwd" placeholder="请输入密码"
               placeholder-class="placeholder" />
           </view>
         </view>
-        <button class="login-btn" @click="handleLogin">Login</button>
+        <button class="login-btn" @click="handleLogin">立即登录</button>
       </view>
       <!--      &lt;!&ndash; 4. 第三方登录 &ndash;&gt;-->
       <!--      <view class="social-section">-->
@@ -46,8 +46,8 @@
       <!--      </view>-->
       <!-- 5. 注册跳转 -->
       <view class="register-footer" @click="goToRegister">
-        <text>Don't have an account?</text>
-        <text class="link">Register New Account</text>
+        <text>没有账号?</text>
+        <text class="link">注册一个新账号</text>
       </view>
     </view>
   </view>
@@ -60,27 +60,27 @@ const showPwd = ref(false);
 const loginForm = reactive({ account: '', password: '' });
 const handleLogin = async () => {
   if (!loginForm.account || !loginForm.password) {
-    uni.showToast({ title: 'Please fill all fields', icon: 'none' });
+    uni.showToast({ title: '请填写所有字段', icon: 'none' });
     return;
   }
-  uni.showLoading({ title: 'Logging in...' });
+  uni.showLoading({ title: '登陆中...' });
 
   try {
     const res = await store.login(loginForm.account, loginForm.password);
     uni.hideLoading();
 
     if (res.success) {
-      uni.showToast({ title: 'Welcome back!', icon: 'success' });
+      uni.showToast({ title: '登录成功', icon: 'success' });
       // 登录成功跳转
       setTimeout(() => {
         uni.switchTab({ url: '/pages/index/index' });
       }, 500);
     } else {
-      uni.showToast({ title: res.message || 'Login failed', icon: 'none' });
+      uni.showToast({ title: res.message || '登录失败', icon: 'none' });
     }
   } catch (error) {
     uni.hideLoading();
-    uni.showToast({ title: 'Authentication error', icon: 'none' });
+    uni.showToast({ title: '身份验证失败，请稍后重试', icon: 'none' });
   }
 };
 const goToRegister = () => {

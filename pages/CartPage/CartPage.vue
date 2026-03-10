@@ -10,15 +10,13 @@
       </view>
       <!-- 文本提示区 -->
       <view class="text-section">
-        <text class="main-title">Please log in to continue</text>
-        <text class="sub-desc"> To track your campus meals and manage your cart, please sign in to your student
-          account.
-        </text>
+        <text class="main-title">登录查看购物车</text>
+        <text class="sub-desc">若要查看或管理您的购物车，请先登录。</text>
       </view>
       <!-- 按钮组 -->
       <view class="btn-group">
-        <button class="btn btn-primary" @click="goToLogin">Go to Login</button>
-        <button class="btn btn-secondary" @click="goHome">Return to Menu</button>
+        <button class="btn btn-primary" @click="goToLogin">登录</button>
+        <button class="btn btn-secondary" @click="goHome">返回菜单</button>
       </view>
     </view>
   </view>
@@ -34,7 +32,7 @@
       <!-- 购物车列表项 -->
       <view v-for="(item, index) in cartList" :key="item.id" class="cart-item">
         <!-- 复选框 -->
-        <checkbox :checked="item.checked" color="#42b983" @click="toggleCheck(index)" class="item-checkbox" />
+        <checkbox :checked="item.checked" color="#42b983" @click="toggleCheck(index)" class="item-checkbox"/>
         <!-- 商品信息 -->
         <view class="item-body">
           <view class="info-left">
@@ -65,13 +63,15 @@
     </view>
   </view>
   <!-- 自定义弹窗组件 -->
-  <CustomModal :visible="showClearModal" title="清空购物车?" content="您确定要清空购物车里的东西吗？" icon="/static/ic_delete.png"
-    iconBg="#fff1f1" confirmText="清空" confirmColor="#e34848" @confirm="doClearCart" @cancel="showClearModal = false" />
+  <CustomModal :visible="showClearModal" title="清空购物车?" content="您确定要清空购物车里的东西吗？"
+               icon="/static/ic_delete.png"
+               iconBg="#fff1f1" confirmText="清空" cancelText="取消" confirmColor="#e34848" @confirm="doClearCart"
+               @cancel="showClearModal = false"/>
 
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import {ref, computed, watch} from 'vue';
 import CustomModal from '@/components/customModal.vue'
 import store from '@/store/index.js'
 
@@ -91,7 +91,7 @@ watch(() => store.state.cart, (newCart) => {
       }
     });
   }
-}, { immediate: true, deep: true });
+}, {immediate: true, deep: true});
 
 // 结合 Store 数据和本地选中状态，生成列表供渲染
 const cartList = computed(() => {
@@ -150,11 +150,11 @@ const doClearCart = async () => {
 
 // 7. 跳转逻辑
 const goToLogin = () => {
-  uni.navigateTo({ url: '/packageProfile/LoginPage/LoginPage' });
+  uni.navigateTo({url: '/packageProfile/LoginPage/LoginPage'});
 };
 
 const goHome = () => {
-  uni.switchTab({ url: '/pages/index/index' });
+  uni.switchTab({url: '/pages/index/index'});
 };
 
 const goCheckout = () => {
@@ -176,7 +176,6 @@ const goCheckout = () => {
   });
 };
 </script>
-
 
 
 <style lang="scss">

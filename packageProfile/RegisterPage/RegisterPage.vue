@@ -6,45 +6,45 @@
         <view class="brand-logo">
           <image src="/static/ic_logo_white.png"></image>
         </view>
-        <text class="main-title">Create Account</text>
-        <text class="sub-title">Join our campus community today</text>
+        <text class="main-title">创建账号</text>
+        <text class="sub-title">马上加入到uni-food！</text>
       </view>
       <!-- 3. 注册表单 -->
       <view class="form-section">
         <view class="input-group">
-          <text class="label">Full Name</text>
-          <input class="input" v-model="regForm.username" placeholder="Enter your full name"
+          <text class="label">昵称</text>
+          <input class="input" v-model="regForm.username" placeholder="请输入昵称"
             placeholder-class="placeholder" />
         </view>
         <view class="input-group">
-          <text class="label">Phone</text>
-          <input class="input" v-model="regForm.account" placeholder="Enter your phone or email"
+          <text class="label">电话</text>
+          <input class="input" v-model="regForm.account" placeholder="请输入手机号"
             placeholder-class="placeholder" />
         </view>
         <view class="input-group">
-          <text class="label">Password</text>
+          <text class="label">密码</text>
           <view class="input-wrapper">
             <input class="input" v-model="regForm.password" :password="!showPwd"
-              placeholder="Create a password" placeholder-class="placeholder" />
-            <uni-icons :type="showPwd ? 'eye-filled' : 'eye-slash-filled'" size="20" color="#cbd5e0"
-              @click="showPwd = !showPwd"></uni-icons>
+              placeholder="请输入密码" placeholder-class="placeholder" />
+    <!--        <uni-icons :type="showPwd ? 'eye-filled' : 'eye-slash-filled'" size="20" color="#cbd5e0"
+              @click="showPwd = !showPwd"></uni-icons> -->
           </view>
         </view>
         <view class="input-group">
-          <text class="label">Confirm Password</text>
+          <text class="label">确认密码</text>
           <view class="input-wrapper">
             <input class="input" v-model="regForm.confirmPassword" :password="!showConfirmPwd"
-              placeholder="Confirm your password" placeholder-class="placeholder" />
-            <uni-icons :type="showConfirmPwd ? 'eye-filled' : 'eye-slash-filled'" size="20" color="#cbd5e0"
-              @click="showConfirmPwd = !showConfirmPwd"></uni-icons>
+              placeholder="请再次输入密码" placeholder-class="placeholder" />
+            <!-- <uni-icons :type="showConfirmPwd ? 'eye-filled' : 'eye-slash-filled'" size="20" color="#cbd5e0"
+              @click="showConfirmPwd = !showConfirmPwd"></uni-icons> -->
           </view>
         </view>
-        <button class="submit-btn" @click="handleRegister">Sign Up</button>
+        <button class="submit-btn" @click="handleRegister">注册</button>
       </view>
       <!-- 4. 跳转登录 -->
       <view class="login-footer" @click="goToLogin">
-        <text>Already have an account?</text>
-        <text class="link">Log In</text>
+        <text>已经有账号了?</text>
+        <text class="link">前往登录</text>
       </view>
     </view>
   </view>

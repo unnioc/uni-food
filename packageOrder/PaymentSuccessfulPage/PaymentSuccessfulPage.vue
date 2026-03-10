@@ -10,15 +10,15 @@
 		</view>
 		<!-- 金额卡片 -->
 		<view class="amount-card">
-			<text class="label">Total Paid</text>
+			<text class="label">总价</text>
 			<text class="amount">￥{{ orderTotal }}</text>
 		</view>
 		<!-- 操作按钮 -->
 		<view class="btn-group">
-			<button class="btn btn-primary" @click="goHome">Home</button>
-			<button class="btn btn-outline" @click="viewOrder">Order Details</button>
+			<button class="btn btn-primary" @click="goHome">回到首页</button>
+			<button class="btn btn-outline" @click="viewOrder">查看详情</button>
 		</view>
-		<text class="order-id" v-if="orderId">Order ID: #{{ orderId }}</text>
+		<text class="order-id" v-if="orderId">订单ID: #{{ orderId }}</text>
 	</view>
 </template>
 

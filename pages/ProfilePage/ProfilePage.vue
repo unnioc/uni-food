@@ -7,8 +7,8 @@
         <image src="/static/ic_user.png"></image>
         <uni-icons type="person-filled" size="50" color="#BDC3C7"></uni-icons>
       </view>
-      <text class="status-title">Not Logged In</text>
-      <text class="status-subtitle">Guest User</text>
+      <text class="status-title">未登录</text>
+      <text class="status-subtitle">游客</text>
     </view>
     <!-- 2. 引导登录卡片 -->
     <view class="login-card">
@@ -16,10 +16,9 @@
         <image class="icon-l" src="/static/ic_food.png" mode=""></image>
       </view>
       <view class="card-content">
-        <text class="card-title">Join the Uni-Food community</text>
-        <text class="card-desc">Log in to track your orders, save delivery addresses, and earn rewards on every meal.
-        </text>
-        <button class="login-btn" @click="goToLogin">Log In / Sign Up</button>
+        <text class="card-title">加入Uni-Food社区</text>
+        <text class="card-desc">登录后即可跟踪您的订单、保存收货地址。</text>
+        <button class="login-btn" @click="goToLogin">登录 / 注册</button>
       </view>
     </view>
     <!-- 3. 功能列表区 -->
@@ -70,13 +69,13 @@
       <!--      </view>-->
       <!-- 模块三：App Support (开放态演示) -->
       <view class="section-group">
-        <text class="section-label">App Support</text>
+        <text class="section-label">更多支持</text>
         <view class="menu-item" @click="navigateTo('/packageProfile/HelpCenterPage/HelpCenterPage')">
           <view class="item-left">
             <view class="icon-bg active">
-              <image class="icon" src="/static/ic_help.png" />
+              <image class="icon" src="/static/ic_help.png"/>
             </view>
-            <text class="item-name">Help Center</text>
+            <text class="item-name">帮助中心</text>
           </view>
           <image class="icon" src="/static/ic_arrow-right.png" mode=""></image>
         </view>
@@ -84,9 +83,9 @@
         <view class="menu-item" @click="navigateTo('/pages/about/about')">
           <view class="item-left">
             <view class="icon-bg active">
-              <image class="icon" src="/static/ic_tip.png" />
+              <image class="icon" src="/static/ic_tip.png"/>
             </view>
-            <text class="item-name">About Uni-Food</text>
+            <text class="item-name">关于Uni-Food</text>
           </view>
           <image class="icon" src="/static/ic_arrow-right.png" mode=""></image>
         </view>
@@ -107,7 +106,7 @@
     <!-- 2. 导航菜单列表 -->
     <view class="menu-list">
       <view v-for="(item, index) in menuItems" :key="index" class="menu-item"
-        @click="index == 0 ? switchTab(item.path) : navigateTo(item.path)">
+            @click="index == 0 ? switchTab(item.path) : navigateTo(item.path)">
         <view class="item-left">
           <image class="icon" :src="item.image" mode=""></image>
           <text class="item-title">{{ item.title }}</text>
@@ -121,12 +120,14 @@
     </view>
   </view>
   <!-- 自定义弹窗组件 -->
-  <CustomModal :visible="showExitModal" title="退出登录" content="您确定要退出当前登录吗？" icon="/static/ic_tip.png" iconBg="#ecf8f2"
-    confirmText="确定" confirmColor="#42b983" @confirm="doExit" @cancel="showExitModal = false" cancel-text="取消" />
+  <CustomModal :visible="showExitModal" title="退出登录" content="您确定要退出当前登录吗？" icon="/static/ic_tip.png"
+               iconBg="#ecf8f2"
+               confirmText="确定" confirmColor="#42b983" @confirm="doExit" @cancel="showExitModal = false"
+               cancel-text="取消"/>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import {computed, ref} from 'vue';
 import CustomModal from '@/components/customModal.vue'
 import store from '@/store/index.js'
 
@@ -203,7 +204,7 @@ const switchTab = (path) => {
 // };
 
 const goToLogin = () => {
-  uni.navigateTo({ url: '/packageProfile/LoginPage/LoginPage' });
+  uni.navigateTo({url: '/packageProfile/LoginPage/LoginPage'});
 };
 
 const showLoginTip = () => {

@@ -29,7 +29,7 @@
 		</view>
 		<!-- 底部操作 -->
 		<view class="footer">
-			<button class="btn-save" @click="saveAddress">Save Address</button>
+			<button class="btn-save" @click="saveAddress">保存地址</button>
 		</view>
 	</view>
 </template>
@@ -51,12 +51,19 @@ const formData = ref({
 const chooseArea = () => {
 	// Mock area chooser or simple placeholder action
 	uni.showToast({ title: '地址选择模拟数据', icon: 'none' });
-	formData.value.area = "虚拟地址";
+	formData.value.area = "模拟地址";
 };
 
 const saveAddress = async () => {
 	if (!formData.value.name || !formData.value.phone || !formData.value.address) {
-		uni.showToast({ title: 'Please fill required fields', icon: 'none' });
+		uni.showToast({ title: '请填写所有字段', icon: 'none' });
+		return;
+	}
+
+	// 手机号正则校验
+	const phoneRegex = /^1[3-9]\d{9}$/;
+	if (!phoneRegex.test(formData.value.phone)) {
+		uni.showToast({ title: '请输入正确的手机号', icon: 'none' });
 		return;
 	}
 
@@ -73,7 +80,7 @@ const saveAddress = async () => {
 
 	if (res.success) {
 		uni.showToast({
-			title: 'Saved Successfully',
+			title: '保存成功',
 			icon: 'success'
 		});
 		setTimeout(() => {
@@ -81,7 +88,7 @@ const saveAddress = async () => {
 		}, 1000);
 	} else {
 		uni.showToast({
-			title: res.message || 'Error',
+			title: res.message || '保存失败，请稍后重试',
 			icon: 'none'
 		});
 	}

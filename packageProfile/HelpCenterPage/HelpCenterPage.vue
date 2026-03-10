@@ -18,14 +18,14 @@
 		<!-- 3. 客服联系区 -->
 		<view class="contact-section">
 			<!-- <text class="still-need">Still need help?</text> -->
-			<text class="still-need">Need help?</text>
-			<text class="desc">Our customer service team is available 24/7 to assist you with any concerns.</text>
+			<text class="still-need">需要帮助?</text>
+			<text class="desc">我们的客服全天候在线，随时为您提供帮助。</text>
 			<button class="btn chat-btn" @click="contactChat">
 				<uni-icons type="chatbubble-filled" size="20" color="#fff" class="btn-icon"></uni-icons>
-				Chat with Us </button>
+				在线联系</button>
 			<button class="btn call-btn" @click="makeCall">
 				<uni-icons type="phone-filled" size="20" color="#42b983" class="btn-icon"></uni-icons>
-				Call Support</button>
+				拨打电话</button>
 		</view>
 	</view>
 </template>

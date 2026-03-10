@@ -1,7 +1,7 @@
 <template>
 	<view class="detail-container">
 		<view v-if="loading" class="loading-box">
-			<text>Loading...</text>
+			<text>加载中...</text>
 		</view>
 
 		<block v-else-if="orderInfo">
@@ -10,7 +10,7 @@
 				<view class="status-icon">
 					<icon type="success" size="40" color="#42b983" />
 				</view>
-				<text class="status-text">{{ orderInfo.status === 'paid' ? 'Payment Successful' : orderInfo.status }}</text>
+				<text class="status-text">{{ orderInfo.status === 'paid' ? '支付成功' : orderInfo.status }}</text>
 				<text class="shop-name">{{ orderInfo.shopName }}</text>
 			</view>
 
@@ -18,7 +18,7 @@
 			<view class="section-box">
 				<view class="section-title title">
 					<image src="/static/ic_food.png"></image>
-					<view>Order Items</view>
+					<view>菜品列表</view>
 				</view>
 				<view v-for="(item, index) in orderInfo.items" :key="index" class="food-item">
 					<view class="food-left">
@@ -32,15 +32,15 @@
 			<!-- 3. 费用明细 -->
 			<view class="section-box cost-details">
 				<view class="cost-row">
-					<text>Subtotal</text>
+					<text>菜品总价</text>
 					<text>￥{{ orderInfo.subtotal.toFixed(2) }}</text>
 				</view>
 				<view class="cost-row">
-					<text>Delivery Fee</text>
+					<text>配送费</text>
 					<text>￥{{ orderInfo.deliveryFee.toFixed(2) }}</text>
 				</view>
 				<view class="cost-row total-row">
-					<text class="total-label">Total</text>
+					<text class="total-label">总价</text>
 					<text class="total-val">￥{{ orderInfo.total.toFixed(2) }}</text>
 				</view>
 			</view>
@@ -49,28 +49,28 @@
 			<view class="section-box info-section">
 				<view class="title section-title">
 					<image src="/static/ic_info.png"></image>
-					<view>Order Info</view>
+					<view>订单信息</view>
 				</view>
 
 				<view class="info-item">
-					<text class="info-label">Order ID</text>
+					<text class="info-label">订单ID</text>
 					<text class="info-val">#{{ orderInfo.orderId }}</text>
 				</view>
 
 				<view class="info-item">
-					<text class="info-label">Create Time</text>
+					<text class="info-label">创建时间</text>
 					<text class="info-val">{{ orderInfo.time }}</text>
 				</view>
 
 				<view class="info-item">
-					<text class="info-label">Address</text>
+					<text class="info-label">地址</text>
 					<text class="info-val">{{ orderInfo.addressStr }}</text>
 				</view>
 			</view>
 		</block>
 
 		<view v-else class="empty-box">
-			<text>Order not found</text>
+			<text>未找到订单信息</text>
 		</view>
 	</view>
 </template>
@@ -93,7 +93,7 @@ onLoad(async (options) => {
 		await loadOrderDetail(options.id);
 	} else {
 		// Fallback or error
-		uni.showToast({ title: 'Order ID missing', icon: 'none' });
+		uni.showToast({ title: '订单号走丢了', icon: 'none' });
 	}
 });
 
@@ -128,7 +128,7 @@ const loadOrderDetail = async (id) => {
 		}
 	} catch (e) {
 		console.error('Fetch order detail failed', e);
-		uni.showToast({ title: 'Failed to load order', icon: 'none' });
+		uni.showToast({ title: '加载订单失败', icon: 'none' });
 	} finally {
 		loading.value = false;
 	}
