@@ -279,7 +279,7 @@ const createOrder = async (address, itemsToOrder = null) => {
 
   const orderData = {
     userId: state.user.id,
-    status: 'paid', // 简化直接为已支付
+    status: '已支付', // 简化直接为已支付
     createTime: new Date().toLocaleString(),
     totalPrice: totalPrice.value, // 注意: 这里如果只结算部分商品，totalPrice可能需要重新计算，建议在PaymentPage传过来正确的金额或在此重新计算
     address: address, // 将选中的地址快照存入
