@@ -165,10 +165,11 @@ $primary-color: #42b983;
 .recommend-scroll {
 	padding: 0 40rpx;
 	margin-bottom: 50rpx;
+	width: 90%;
 
 	.recommend-list {
 		display: flex;
-		padding-right: 40rpx;
+		padding-right: 60rpx;
 
 		.recommend-img {
 			width: 200rpx;
