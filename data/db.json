@@ -142,6 +142,46 @@
           "checked": true
         }
       ]
+    },
+    {
+      "id": "e33c",
+      "userId": "c917",
+      "status": "已支付",
+      "createTime": "2026/3/15 21:42:04",
+      "totalPrice": 288,
+      "address": "广东省深圳市龙岗区龙翔大道2188号",
+      "items": [
+        {
+          "id": "9317",
+          "userId": "c917",
+          "foodId": "301",
+          "name": "手打柠檬气泡水",
+          "price": 16,
+          "image": "/static/food_301.png",
+          "count": 4,
+          "checked": true
+        },
+        {
+          "id": "d5a7",
+          "userId": "c917",
+          "foodId": "401",
+          "name": "三文鱼握寿司",
+          "price": 38,
+          "image": "/static/food_401.png",
+          "count": 5,
+          "checked": true
+        },
+        {
+          "id": "9c71",
+          "userId": "c917",
+          "foodId": "305",
+          "name": "京都抹茶奶青",
+          "price": 17,
+          "image": "/static/food_305.png",
+          "count": 2,
+          "checked": true
+        }
+      ]
     }
   ],
   "banners": [
