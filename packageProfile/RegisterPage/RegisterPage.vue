@@ -87,7 +87,7 @@ const handleRegister = async () => {
 
     if (res.success) {
       uni.showToast({
-        title: 'Success!',
+        title: '创建成功!',
         icon: 'success',
         duration: 1500
       });
@@ -101,7 +101,7 @@ const handleRegister = async () => {
     }
   } catch (e) {
     uni.hideLoading();
-    uni.showToast({ title: 'Error creating account', icon: 'none' });
+    uni.showToast({ title: '创建账号失败，请稍后重试', icon: 'none' });
   }
 };
 const goToLogin = () => {
