@@ -39,6 +39,30 @@
       "nickName": "uni",
       "avatar": "/static/ic_default_avatar.png",
       "addresses": []
+    },
+    {
+      "id": "59aa",
+      "phone": "13612345678",
+      "password": "123456",
+      "nickName": "user",
+      "avatar": "/static/ic_default_avatar.png",
+      "addresses": []
+    },
+    {
+      "id": "03b2",
+      "phone": "13712345678",
+      "password": "123456",
+      "nickName": "user",
+      "avatar": "/static/ic_default_avatar.png",
+      "addresses": []
+    },
+    {
+      "id": "8444",
+      "phone": "18412345678",
+      "password": "123456",
+      "nickName": "user",
+      "avatar": "/static/ic_default_avatar.png",
+      "addresses": []
     }
   ],
   "carts": [
